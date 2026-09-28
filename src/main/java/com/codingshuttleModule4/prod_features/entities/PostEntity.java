@@ -17,4 +17,19 @@ public class PostEntity extends AuditableEntity {
     private String title;
     private String description;
 
+    //you can implement auditing on your own without using AuditableEntityListeners in this way:-
+    /*@PrePersist
+    void beforeSave() {
+
+    }
+
+    @PreUpdate
+    void beforeUpdate(){
+
+    }
+
+    @PreRemove
+    void beforeDelete(){
+
+    }*/
 }
