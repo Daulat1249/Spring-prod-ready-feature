@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @EntityListeners(AuditingEntityListener.class)
-@Audited
+@Audited  //audit all the fields of the class in which this annotation is added on not necessarily only for AuditingEntityListener class
 public class AuditableEntity {
 
     @CreatedDate

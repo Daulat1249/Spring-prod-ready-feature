@@ -2,6 +2,7 @@ package com.codingshuttleModule4.prod_features.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name = "posts")
@@ -9,6 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@Audited
 public class PostEntity extends AuditableEntity {
 
     @Id
