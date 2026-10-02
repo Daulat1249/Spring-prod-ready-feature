@@ -3,8 +3,10 @@ package com.codingshuttleModule4.prod_features.client.impl;
 import com.codingshuttleModule4.prod_features.advice.ApiResponse;
 import com.codingshuttleModule4.prod_features.client.EmployeeClient;
 import com.codingshuttleModule4.prod_features.dto.EmployeeDTO;
+import com.codingshuttleModule4.prod_features.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -50,6 +52,13 @@ public class EmployeeClientImpl implements EmployeeClient {
                 .uri("employees")
                 .body(employeeDTO)
                 .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
+                    System.out.println(new String(response.getBody().readAllBytes()));
+                    throw new ResourceNotFoundException("could not create the employee");
+                }))
+                /*.onStatus(HttpStatusCode::is5xxServerError, ((request, response) -> {
+                    throw new RuntimeException("Server error Occurred");
+                }))*/
                 .body(new ParameterizedTypeReference<>() {
                 });
         return employeeDTOApiResponse.getData();
