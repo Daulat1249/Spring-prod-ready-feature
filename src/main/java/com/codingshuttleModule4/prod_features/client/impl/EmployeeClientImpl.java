@@ -7,6 +7,7 @@ import com.codingshuttleModule4.prod_features.exceptions.ResourceNotFoundExcepti
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -49,7 +50,7 @@ public class EmployeeClientImpl implements EmployeeClient {
     @Override
     public EmployeeDTO createNewEmployee(EmployeeDTO employeeDTO) {
         try {
-            ApiResponse<EmployeeDTO> employeeDTOApiResponse = restClient.post()
+            ResponseEntity<ApiResponse<EmployeeDTO>> employeeDTOApiResponse = restClient.post()
                     .uri("employees")
                     .body(employeeDTO)
                     .retrieve()
@@ -60,9 +61,9 @@ public class EmployeeClientImpl implements EmployeeClient {
                     /*.onStatus(HttpStatusCode::is5xxServerError, ((request, response) -> {
                         throw new RuntimeException("Server error Occurred");
                     }))*/
-                    .body(new ParameterizedTypeReference<>() {
+                    .toEntity(new ParameterizedTypeReference<>() {
                     });
-            return employeeDTOApiResponse.getData();
+            return employeeDTOApiResponse.getBody().getData();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
