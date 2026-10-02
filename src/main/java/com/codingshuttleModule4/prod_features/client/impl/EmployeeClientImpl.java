@@ -48,19 +48,23 @@ public class EmployeeClientImpl implements EmployeeClient {
 
     @Override
     public EmployeeDTO createNewEmployee(EmployeeDTO employeeDTO) {
-        ApiResponse<EmployeeDTO> employeeDTOApiResponse = restClient.post()
-                .uri("employees")
-                .body(employeeDTO)
-                .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
-                    System.out.println(new String(response.getBody().readAllBytes()));
-                    throw new ResourceNotFoundException("could not create the employee");
-                }))
-                /*.onStatus(HttpStatusCode::is5xxServerError, ((request, response) -> {
-                    throw new RuntimeException("Server error Occurred");
-                }))*/
-                .body(new ParameterizedTypeReference<>() {
-                });
-        return employeeDTOApiResponse.getData();
-    }
+        try {
+            ApiResponse<EmployeeDTO> employeeDTOApiResponse = restClient.post()
+                    .uri("employees")
+                    .body(employeeDTO)
+                    .retrieve()
+                    .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
+                        System.out.println(new String(response.getBody().readAllBytes()));
+                        throw new ResourceNotFoundException("could not create the employee");
+                    }))
+                    /*.onStatus(HttpStatusCode::is5xxServerError, ((request, response) -> {
+                        throw new RuntimeException("Server error Occurred");
+                    }))*/
+                    .body(new ParameterizedTypeReference<>() {
+                    });
+            return employeeDTOApiResponse.getData();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        }
 }
