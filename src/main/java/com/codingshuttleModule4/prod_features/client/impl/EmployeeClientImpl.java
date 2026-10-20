@@ -5,6 +5,7 @@ import com.codingshuttleModule4.prod_features.client.EmployeeClient;
 import com.codingshuttleModule4.prod_features.dto.EmployeeDTO;
 import com.codingshuttleModule4.prod_features.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +13,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 import java.util.List;
+import org.slf4j.Logger;
 
 @Service
 @RequiredArgsConstructor
 public class EmployeeClientImpl implements EmployeeClient {
 
     private final RestClient restClient;
+    Logger logger = LoggerFactory.getLogger(EmployeeClientImpl.class);
 
     @Override
     public List<EmployeeDTO> getAllEmployees() {
@@ -49,6 +52,14 @@ public class EmployeeClientImpl implements EmployeeClient {
 
     @Override
     public EmployeeDTO createNewEmployee(EmployeeDTO employeeDTO) {
+
+        logger.error("ERROR LOG");
+        logger.warn("WARN LOG");
+        logger.info("INFO LOG");
+        logger.debug("DEBUG LOG");
+        logger.trace("TRACE LOG");
+
+
         try {
             ResponseEntity<ApiResponse<EmployeeDTO>> employeeDTOApiResponse = restClient.post()
                     .uri("employees")
