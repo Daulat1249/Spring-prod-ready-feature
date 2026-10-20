@@ -53,14 +53,18 @@ public class EmployeeClientImpl implements EmployeeClient {
     @Override
     public EmployeeDTO createNewEmployee(EmployeeDTO employeeDTO) {
 
-        logger.error("ERROR LOG");
+        /*logger.error("ERROR LOG");
         logger.warn("WARN LOG");
         logger.info("INFO LOG");
         logger.debug("DEBUG LOG");
-        logger.trace("TRACE LOG");
+        logger.trace("TRACE LOG");*/
 
+        logger.trace("Trying to create new employee in createNewEmployee");
 
         try {
+            logger.info("Attempting to call the restClient method in createNewEmployee");
+
+
             ResponseEntity<ApiResponse<EmployeeDTO>> employeeDTOApiResponse = restClient.post()
                     .uri("employees")
                     .body(employeeDTO)
@@ -74,6 +78,9 @@ public class EmployeeClientImpl implements EmployeeClient {
                     }))*/
                     .toEntity(new ParameterizedTypeReference<>() {
                     });
+
+            logger.debug("Successfully create new employee in createNewEmployee");
+            logger.trace("Create new employee in createNewEmployee: {}",employeeDTOApiResponse.getBody().getData());
             return employeeDTOApiResponse.getBody().getData();
         } catch (Exception e) {
             throw new RuntimeException(e);
